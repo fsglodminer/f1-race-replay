@@ -6,6 +6,7 @@ from src.cli.race_selection import cli_load
 from src.gui.race_selection import RaceSelectionWindow
 from PySide6.QtWidgets import QApplication
 from src.lib.season import get_season
+import logging
 
 def main(year=None, round_number=None, playback_speed=1, session_type='R', visible_hud=True, ready_file=None, show_telemetry_viewer=True):
   print(f"Loading F1 {year} Round {round_number} Session '{session_type}'")
@@ -113,6 +114,9 @@ if __name__ == "__main__":
     # Run the CLI
     cli_load()
     sys.exit(0)
+  
+  if "--verboseapi"not  in sys.argv:
+    logging.getLogger("fastf1").setLevel(logging.CRITICAL)#permanently silencing fastf1 logger
 
   if "--year" in sys.argv:
     year_index = sys.argv.index("--year") + 1
