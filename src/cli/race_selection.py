@@ -77,6 +77,6 @@ def cli_load():
         cmd.append(flag)
     if not hud:
         cmd.append("--no-hud")
-    if "--verboseapi" in sys.argv:
-        cmd.append("--verboseapi")
+    if "--verbose" in sys.argv:
+        cmd.append("--verbose")
     subprocess.run(cmd)
