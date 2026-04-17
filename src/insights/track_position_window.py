@@ -553,12 +553,12 @@ class TrackPositionWindow(PitWallWindow):
 
         self._btn_real = QPushButton("Real Track")
         self._btn_real.setFixedHeight(24)
-        self._btn_real.setStyleSheet(_btn_inactive)  # default active
+        self._btn_real.setStyleSheet(_btn_inactive)
         self._btn_real.clicked.connect(lambda: self._set_view_mode("real"))
 
         self._btn_schematic = QPushButton("Circular")
         self._btn_schematic.setFixedHeight(24)
-        self._btn_schematic.setStyleSheet(_btn_active)
+        self._btn_schematic.setStyleSheet(_btn_active) # default active
         self._btn_schematic.clicked.connect(lambda: self._set_view_mode("schematic"))
 
         toggle_row = QHBoxLayout()
@@ -635,8 +635,11 @@ class TrackPositionWindow(PitWallWindow):
         positions: dict[str, float] = {}
         for code, info in drivers.items():
             self._ensure_color(code)
-            dist = info.get("dist", 0.0)
-            positions[code] = (dist % self._circuit_length_m) / self._circuit_length_m
+            if "fraction" in info:
+                positions[code] = info["fraction"]
+            else:
+                dist = info.get("dist", 0.0)
+                positions[code] = (dist % self._circuit_length_m) / self._circuit_length_m
 
         leader_code = next(
             (code for code, info in drivers.items() if info.get("position") == 1),

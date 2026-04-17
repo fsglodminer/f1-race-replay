@@ -246,6 +246,10 @@ class F1RaceReplayWindow(arcade.Window):
                 x, y = pos["x"], pos["y"]
                 progress_m = self._project_to_reference(x, y)
                 driver_progress[code] = progress_m
+                if self._ref_total_length > 0:
+                    pos["fraction"] = progress_m / self._ref_total_length
+                else:
+                    pos["fraction"] = 0.0
                 
             if driver_progress:
                 leader_code = max(driver_progress.keys(), key=lambda k: driver_progress[k])
